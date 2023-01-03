@@ -8,7 +8,7 @@ public class TCAS {
     // La distance verticale en pied pour considérer un danger
     private static double CONFLICT_ALTITUDE_THRESHOLD = 0.750 ;
     // La distance horizontale en mile marin pour considérer un danger
-    private static double CONFLICT_DISTANCE_THRESHOLD = 4 ;
+    private static int CONFLICT_DISTANCE_THRESHOLD = 5 ;
     // L'avion où le systeme TCAS est installé
     private Aircraft myAircraft;
     // Liste des avions dans le système TCAS
@@ -48,6 +48,9 @@ public class TCAS {
         // Calculer la distance et l'altitude relative entre les deux avions
         double distance = calcDistance(lat1, lon1, lat2, lon2);
         double relativeAltitude = calcRelativeAltitude(alt1, alt2);
+
+        System.out.println("distance " + distance);
+        System.out.println("altitude " + relativeAltitude);
 
         // Vérifier si la distance et l'altitude relative entre les deux avions
         // dépassent les seuils prédéfinis
@@ -89,7 +92,7 @@ public class TCAS {
 
     // Méthode pour calculer l'altitude relative entre deux avions
     public double calcRelativeAltitude(double alt1, double alt2) {
-        return alt1 - alt2;
+        return Math.abs(alt1 - alt2);
     }
 
 
