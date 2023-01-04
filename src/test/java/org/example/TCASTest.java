@@ -111,10 +111,44 @@ class TCASTest {
     }
 
     @Test
-    void addAircraft() {
+    void testDetectConflicts() {
+        // Créer l'avion ou le TCAS est déployé
+        Aircraft aircraft = Mockito.mock(Aircraft.class);
+        // Configurer le comportement mock pour l'aircraft1
+        Mockito.when(aircraft.getLatitude()).thenReturn(47.65);
+        Mockito.when(aircraft.getLongitude()).thenReturn(122.4);
+        Mockito.when(aircraft.getAltitude()).thenReturn(29500);
+        // créer un object TCAS
+        TCAS t = new TCAS(aircraft);
+
+        // Créer les avions dans le champ de détection du TCAS
+        Aircraft aircraft1 = Mockito.mock(Aircraft.class);
+        Aircraft aircraft2 = Mockito.mock(Aircraft.class);
+
+        // Ajouter les avions au champ de détection du TCAS
+        t.addAircraft(aircraft1);
+        t.addAircraft(aircraft2);
+
+        //Modifier les positions et des mouvements pour entraîner un conflit
+
+        // Configurer le comportement mock pour l'aircraft1 afin d'avoir une distance de danger
+        Mockito.when(aircraft1.getLatitude()).thenReturn(47.7);
+        Mockito.when(aircraft1.getLongitude()).thenReturn(122.4);
+        Mockito.when(aircraft1.getAltitude()).thenReturn(30000);
+
+        // Configurer le comportement mock pour l'aircraft2
+        Mockito.when(aircraft2.getLatitude()).thenReturn(47.7);
+        Mockito.when(aircraft2.getLongitude()).thenReturn(122.4);
+        Mockito.when(aircraft2.getAltitude()).thenReturn(25000);
+
+        assertTrue(t.detectConflicts());
+
+        // Configurer le comportement mock pour l'aircraft1 afin ne plus avoir une distance de danger
+        Mockito.when(aircraft1.getLatitude()).thenReturn(47.0);
+        Mockito.when(aircraft1.getLongitude()).thenReturn(122.4);
+        Mockito.when(aircraft1.getAltitude()).thenReturn(30000);
+
+        assertFalse(t.detectConflicts());
     }
 
-    @Test
-    void detectConflicts() {
-    }
 }

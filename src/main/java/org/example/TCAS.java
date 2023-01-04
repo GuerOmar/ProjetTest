@@ -8,6 +8,18 @@ import java.util.List;
    LLR1 : Si l'un des entrée est nulle, la fonction retourne la valeur 0
    LLR2 : Si l'un des entrée est négatif, la fonction calcule le plus petit multiple commun par rapport à sa valeur absolue
 */
+
+/*
+    HLR: L'outil TCAS doit être capable de détecter les conflits entre avions dans son champ de détection
+    LLR1 : L'outil doit pouvoir calculer la distance entre deux avion à partir de leurs longitudes et latitudes
+    LLR2 : La longitude doit etre comprise entre -180 et 180 sinon le programme génère une excepssion
+    LLR3 : La latitude doit etre comprise entre -90 et 90 sinon le programme génère une excepssion
+    LLR4: L'outil doit pouvoir comparer la différence d'altitude entre deux avions qui est positif
+    LLR5: L'altitude est toujours positif sinon le programme déclenche une excepssion
+    LLR6: Le programme détecte s'il y a un conflit entre deux avion en comparant
+            la distance et la difference d'altitude à des seuils définit
+    LLR7: La fonction detectConflicts vérifie s'il y a un conflit avec un avion dans le champ de détection du TCAS
+ */
 public class TCAS {
 
 
@@ -34,7 +46,7 @@ public class TCAS {
         for (int i = 0; i < aircrafts.size(); i++) {
             Aircraft aircraft = aircrafts.get(i);
                 if (isConflict(aircraft)) {
-                    // Gérer le conflit entre les deux avions
+                    // Conflit détecter
                     return true;
                 }
         }
