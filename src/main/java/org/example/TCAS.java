@@ -3,10 +3,16 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+   HLR : La fonction doit prendre en entrée 2 entier  et retourner leur plus grand multiple commun
+   LLR1 : Si l'un des entrée est nulle, la fonction retourne la valeur 0
+   LLR2 : Si l'un des entrée est négatif, la fonction calcule le plus petit multiple commun par rapport à sa valeur absolue
+*/
 public class TCAS {
 
+
     // La distance verticale en pied pour considérer un danger
-    private static double CONFLICT_ALTITUDE_THRESHOLD = 0.750 ;
+    private static int CONFLICT_ALTITUDE_THRESHOLD = 750 ;
     // La distance horizontale en mile marin pour considérer un danger
     private static int CONFLICT_DISTANCE_THRESHOLD = 5 ;
     // L'avion où le systeme TCAS est installé
@@ -24,14 +30,15 @@ public class TCAS {
     }
 
     // Méthode pour détecter les conflits entre avions
-    public void detectConflicts() {
+    public boolean detectConflicts() {
         for (int i = 0; i < aircrafts.size(); i++) {
             Aircraft aircraft = aircrafts.get(i);
                 if (isConflict(aircraft)) {
                     // Gérer le conflit entre les deux avions
-                    resolveConflict(myAircraft, aircraft);
+                    return true;
                 }
         }
+        return false;
     }
 
 
@@ -40,17 +47,14 @@ public class TCAS {
         // Récupérer les données de position et de mouvement des deux avions
         double lat1 = myAircraft.getLatitude();
         double lon1 = myAircraft.getLongitude();
-        double alt1 = myAircraft.getAltitude();
+        int alt1 = myAircraft.getAltitude();
         double lat2 = aircraft.getLatitude();
         double lon2 = aircraft.getLongitude();
-        double alt2 = aircraft.getAltitude();
+        int alt2 = aircraft.getAltitude();
 
         // Calculer la distance et l'altitude relative entre les deux avions
         double distance = calcDistance(lat1, lon1, lat2, lon2);
         double relativeAltitude = calcRelativeAltitude(alt1, alt2);
-
-        System.out.println("distance " + distance);
-        System.out.println("altitude " + relativeAltitude);
 
         // Vérifier si la distance et l'altitude relative entre les deux avions
         // dépassent les seuils prédéfinis
@@ -62,16 +66,21 @@ public class TCAS {
             return false;
         }
     }
-    // Méthode pour résoudre un conflit entre deux avions
-    private void resolveConflict(Aircraft aircraft1, Aircraft aircraft2) {
-        // Envoyer des instructions de résolution de conflit aux deux avions
-        aircraft1.resolveConflict();
-        aircraft2.resolveConflict();
-    }
 
     // Méthode pour calculer la distance entre deux avions
     public double calcDistance(double lat1, double lon1, double lat2, double lon2) {
-        double earthRadius = 6371.0; // Radius of the Earth in kilometers
+        if(lat1 > 90.0 || lat1<-90.0)
+            throw new IllegalStateException("La valeur de la latitude 1 doit etre comprise entre -90 et 90");
+        if(lat2 >90.0 || lat2<-90.0)
+            throw new IllegalStateException("La valeur de la latitude 2 doit etre comprise entre -90 et 90");
+        if(lat2 >90.0 || lat2<-90.0)
+            throw new IllegalStateException("La valeur de la latitude 2 doit etre comprise entre -90 et 90");
+        if(lon1 >180.0 || lon1<-180.0)
+            throw new IllegalStateException("La valeur de la longitude 1 doit etre comprise entre -180 et 180");
+        if(lon2 >180.0 || lon2<-180.0)
+            throw new IllegalStateException("La valeur de la longitude 2 doit etre comprise entre -180 et 180");
+
+        double earthRadius = 6371.0;
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
         lat1 = Math.toRadians(lat1);
@@ -81,9 +90,9 @@ public class TCAS {
                    Math.sin(dLon / 2) * Math.sin(dLon / 2) *
                    Math.cos(lat1) * Math.cos(lat2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = earthRadius * c; // Distance in kilometers
+        double distance = earthRadius * c; // Distance en kilometers
 
-        // Convert distance from kilometers to miles
+        // Convertir la distance de kilometers à miles
         double distanceInMiles = distance / 1.609;
 
         return distanceInMiles;
@@ -91,7 +100,11 @@ public class TCAS {
 
 
     // Méthode pour calculer l'altitude relative entre deux avions
-    public double calcRelativeAltitude(double alt1, double alt2) {
+    public double calcRelativeAltitude(int alt1, int alt2) {
+        if( alt1 < 0)
+            throw new IllegalStateException("La valeur de l'altitude 1 doit etre positive");
+        if( alt2 < 0)
+            throw new IllegalStateException("La valeur de l'altitude 2 doit etre positive");
         return Math.abs(alt1 - alt2);
     }
 

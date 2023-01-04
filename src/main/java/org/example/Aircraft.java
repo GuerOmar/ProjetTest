@@ -8,12 +8,8 @@ public class Aircraft {
     public double getLongitude(){
         return 0;
     }
-    public double getAltitude(){
+    public int getAltitude(){
         return 0;
-    }
-
-    public void resolveConflict(){
-
     }
 
 }
