@@ -3,30 +3,14 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-   HLR : La fonction doit prendre en entrée 2 entier  et retourner leur plus grand multiple commun
-   LLR1 : Si l'un des entrée est nulle, la fonction retourne la valeur 0
-   LLR2 : Si l'un des entrée est négatif, la fonction calcule le plus petit multiple commun par rapport à sa valeur absolue
-*/
 
-/*
-    HLR: L'outil TCAS doit être capable de détecter les conflits entre avions dans son champ de détection
-    LLR1 : L'outil doit pouvoir calculer la distance entre deux avion à partir de leurs longitudes et latitudes
-    LLR2 : La longitude doit etre comprise entre -180 et 180 sinon le programme génère une excepssion
-    LLR3 : La latitude doit etre comprise entre -90 et 90 sinon le programme génère une excepssion
-    LLR4: L'outil doit pouvoir comparer la différence d'altitude entre deux avions qui est positif
-    LLR5: L'altitude est toujours positif sinon le programme déclenche une excepssion
-    LLR6: Le programme détecte s'il y a un conflit entre deux avion en comparant
-            la distance et la difference d'altitude à des seuils définit
-    LLR7: La fonction detectConflicts vérifie s'il y a un conflit avec un avion dans le champ de détection du TCAS
- */
 public class TCAS {
 
 
     // La distance verticale en pied pour considérer un danger
-    private static int CONFLICT_ALTITUDE_THRESHOLD = 750 ;
+    private static int CONFLICT_RELATIVE_ALTITUDE = 750 ;
     // La distance horizontale en mile marin pour considérer un danger
-    private static int CONFLICT_DISTANCE_THRESHOLD = 5 ;
+    private static int CONFLICT_DISTANCE = 5 ;
     // L'avion où le systeme TCAS est installé
     private Aircraft myAircraft;
     // Liste des avions dans le système TCAS
@@ -40,6 +24,7 @@ public class TCAS {
     public void addAircraft(Aircraft aircraft) {
         aircrafts.add(aircraft);
     }
+
 
     // Méthode pour détecter les conflits entre avions
     public boolean detectConflicts() {
@@ -70,7 +55,7 @@ public class TCAS {
 
         // Vérifier si la distance et l'altitude relative entre les deux avions
         // dépassent les seuils prédéfinis
-        if (distance < CONFLICT_DISTANCE_THRESHOLD && relativeAltitude < CONFLICT_ALTITUDE_THRESHOLD) {
+        if (distance < CONFLICT_DISTANCE && relativeAltitude < CONFLICT_RELATIVE_ALTITUDE) {
             // Les deux avions sont en conflit
             return true;
         } else {

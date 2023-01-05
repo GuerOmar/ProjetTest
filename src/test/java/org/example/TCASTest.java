@@ -151,4 +151,15 @@ class TCASTest {
         assertFalse(t.detectConflicts());
     }
 
+    @Test
+    void testAddAircraft(){
+        // créer un object TCAS
+        TCAS t = new TCAS(Mockito.mock(Aircraft.class));
+
+
+        // On ajoute des avions à notre systeme de TCAS
+        t.addAircraft(Mockito.mock(Aircraft.class));
+        t.addAircraft(Mockito.mock(Aircraft.class));
+    }
+
 }
