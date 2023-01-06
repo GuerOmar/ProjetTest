@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TCASTest {
 
     @Test
-    public void testConflictDetection() {
+    public void testisConflict() {
         // Créer deux avions
         Aircraft aircraft1 = Mockito.mock(Aircraft.class);
         Aircraft aircraft2 = Mockito.mock(Aircraft.class);
@@ -16,7 +16,7 @@ class TCASTest {
         TCAS t1 = new TCAS(aircraft1);
         TCAS t2 = new TCAS(aircraft2);
 
-        //Modifier les positions et des mouvements pour entraîner un conflit
+        //Modifier les positions pour entraîner un conflit
         // Configurer le comportement mock pour l'aircraft1
         Mockito.when(aircraft1.getLatitude()).thenReturn(47.65);
         Mockito.when(aircraft1.getLongitude()).thenReturn(122.4);
@@ -32,7 +32,7 @@ class TCASTest {
         assertTrue(t1.isConflict(aircraft2));
         assertTrue(t2.isConflict(aircraft1));
 
-        //Modifier les positions et des mouvements pour ne pas avoir un conflit en ayant des altitudes différentes
+        //Modifier les positions pour ne pas avoir de conflit en ayant des altitudes différentes
         // Configurer le comportement mock pour l'aircraft1
         Mockito.when(aircraft1.getLatitude()).thenReturn(47.65);
         Mockito.when(aircraft1.getLongitude()).thenReturn(122.4);
@@ -47,7 +47,7 @@ class TCASTest {
         assertFalse(t1.isConflict(aircraft2));
         assertFalse(t2.isConflict(aircraft1));
 
-        //Modifier les positions et des mouvements pour ne pas avoir un conflit en ayant une distance tres grande
+        //Modifier les positions pour ne pas avoir de conflit en ayant une distance tres grande
         // Configurer le comportement mock pour l'aircraft1
         Mockito.when(aircraft1.getLatitude()).thenReturn(47.0);
         Mockito.when(aircraft1.getLongitude()).thenReturn(122.0);

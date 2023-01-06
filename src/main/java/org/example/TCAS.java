@@ -13,20 +13,20 @@ public class TCAS {
     private static int CONFLICT_DISTANCE = 5 ;
     // L'avion où le systeme TCAS est installé
     private Aircraft myAircraft;
-    // Liste des avions dans le système TCAS
+    // Liste des avions surveillé par le système TCAS
     private List<Aircraft> aircrafts = new ArrayList<>();
 
     public TCAS(Aircraft aircraft){
         myAircraft = aircraft;
     }
 
-    // Méthode pour ajouter un avion à la liste
+    // Méthode pour ajouter un avion à la liste des avions surveillées
     public void addAircraft(Aircraft aircraft) {
         aircrafts.add(aircraft);
     }
 
 
-    // Méthode pour détecter les conflits entre avions
+    // Méthode pour détecter les conflits avec les avions surveillées
     public boolean detectConflicts() {
         for (int i = 0; i < aircrafts.size(); i++) {
             Aircraft aircraft = aircrafts.get(i);
@@ -41,7 +41,7 @@ public class TCAS {
 
     // Méthode pour vérifier si deux avions sont en conflit
     public boolean isConflict(Aircraft aircraft) {
-        // Récupérer les données de position et de mouvement des deux avions
+        // Récupérer les données de position des deux avions
         double lat1 = myAircraft.getLatitude();
         double lon1 = myAircraft.getLongitude();
         int alt1 = myAircraft.getAltitude();
@@ -66,6 +66,7 @@ public class TCAS {
 
     // Méthode pour calculer la distance entre deux avions
     public double calcDistance(double lat1, double lon1, double lat2, double lon2) {
+        // Vérifier que les entrées sont valides
         if(lat1 > 90.0 || lat1<-90.0)
             throw new IllegalStateException("La valeur de la latitude 1 doit etre comprise entre -90 et 90");
         if(lat2 >90.0 || lat2<-90.0)
@@ -77,6 +78,7 @@ public class TCAS {
         if(lon2 >180.0 || lon2<-180.0)
             throw new IllegalStateException("La valeur de la longitude 2 doit etre comprise entre -180 et 180");
 
+        // Calculer la distance
         double earthRadius = 6371.0;
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
@@ -89,7 +91,7 @@ public class TCAS {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = earthRadius * c; // Distance en kilometers
 
-        // Convertir la distance de kilometers à miles
+        // Convertir la distance de kilometers en mile marin
         double distanceInMiles = distance / 1.609;
 
         return distanceInMiles;
